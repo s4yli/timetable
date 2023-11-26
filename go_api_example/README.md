@@ -6,11 +6,17 @@ Tidy / download modules :
 ```
 go mod tidy
 ```
-Build : 
+Build & run :
+```
+go run cmd/main.go
+```
+
+
+Or build : 
 ```
 go build -o middleware_collections cmd/main.go
 ```
-Run : 
+Then run : 
 ```
 ./middleware_collections
 ```
