@@ -2,7 +2,6 @@ package collections
 
 import (
 	"database/sql"
-	"errors"
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 	"middleware/example/internal/models"
@@ -29,7 +28,7 @@ func GetAllCollections() ([]models.Collection, error) {
 func GetCollectionById(id uuid.UUID) (*models.Collection, error) {
 	collection, err := repository.GetCollectionById(id)
 	if err != nil {
-		if errors.As(err, &sql.ErrNoRows) {
+		if err.Error() == sql.ErrNoRows.Error() {
 			return nil, &models.CustomError{
 				Message: "collection not found",
 				Code:    http.StatusNotFound,
