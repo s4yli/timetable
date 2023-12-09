@@ -174,7 +174,7 @@ def register():
         error = ConflictSchema().loads(json.dumps({"message": "User already exists"}))
         return error, error.get("code")
     except SomethingWentWrong:
-        error = UnprocessableEntitySchema().loads("{}")
+        error = SomethingWentWrongSchema().loads("{}")
         return error, error.get("code")
 
 
