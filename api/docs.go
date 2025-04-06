@@ -18,13 +18,13 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/collections": {
+        "/events": {
             "get": {
-                "description": "Get collections.",
+                "description": "Get events.",
                 "tags": [
-                    "collections"
+                    "events"
                 ],
-                "summary": "Get collections.",
+                "summary": "Get events.",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -41,11 +41,11 @@ const docTemplate = `{
                 }
             }
         },
-        "/collections/{id}": {
+        "/events/{id}": {
             "get": {
                 "description": "Get a collection.",
                 "tags": [
-                    "collections"
+                    "events"
                 ],
                 "summary": "Get a collection.",
                 "parameters": [
@@ -96,7 +96,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{"http"},
 	Title:            "middleware/example",
-	Description:      "API to manage collections.",
+	Description:      "API to manage events.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

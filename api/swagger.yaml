@@ -11,13 +11,13 @@ info:
   contact:
     email: justine.bachelard@ext.uca.fr
     name: Justine Bachelard.
-  description: API to manage collections.
+  description: API to manage events.
   title: middleware/example
   version: 1.0.0
 paths:
   /collections:
     get:
-      description: Get collections.
+      description: Get events.
       responses:
         "200":
           description: OK
@@ -27,9 +27,9 @@ paths:
             type: array
         "500":
           description: Something went wrong
-      summary: Get collections.
+      summary: Get events.
       tags:
-      - collections
+      - events
   /collections/{id}:
     get:
       description: Get a collection.
@@ -50,7 +50,7 @@ paths:
           description: Something went wrong
       summary: Get a collection.
       tags:
-      - collections
+      - events
 schemes:
 - http
 swagger: "2.0"

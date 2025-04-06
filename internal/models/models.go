@@ -1,10 +1,12 @@
 package models
 
-import (
-	"github.com/gofrs/uuid"
-)
-
-type Collection struct {
-	Id      *uuid.UUID `json:"id"`
-	Content string     `json:"content"`
+type Event struct {
+	Id           string `json:"UID"`
+	Dtstamp      string `json:"DTSTAMP"`
+	Dtstart      string `json:"DTSTART"`
+	Dtend        string `json:"DTEND"`
+	Description  string `json:"DESCRIPTION"`
+	Location     string `json:"LOCATION"`
+	Created      string `json:"CREATED"`
+	LastModified string `json:"LAST-MODIFIED"`
 }
