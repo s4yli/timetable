@@ -11,6 +11,9 @@ import (
 	"time"
 )
 
+const alerterSubject = "TIMETABLE.ALERTER"
+
+// EventConsumer initialise le consumer NATS pour le stream TIMETABLE
 func EventConsumer() (jetstream.Consumer, error) {
 	js, err := jetstream.New(helpers.NatsConn)
 	if err != nil {
@@ -41,15 +44,15 @@ func EventConsumer() (jetstream.Consumer, error) {
 		return nil, err
 	}
 
-	logrus.Info("Consumer NATS initialisé avec succès")
+	logrus.Info("Consumer NATS TIMETABLE initialisé avec succès")
 	return consumer, nil
 }
 
+// Consume démarre la consommation des messages du consumer TIMETABLE
 func Consume(consumer jetstream.Consumer) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Consommation des messages
 	consCtx, err := consumer.Consume(func(msg jetstream.Msg) {
 		processMessage(msg)
 	})
@@ -58,11 +61,12 @@ func Consume(consumer jetstream.Consumer) error {
 	}
 	defer consCtx.Stop()
 
-	// Attente indéfinie (ou jusqu'à annulation du contexte)
 	<-ctx.Done()
 	return nil
 }
 
+// processMessage traite un message reçu sur TIMETABLE.EVENTS, met à jour la BDD,
+// puis publie un message d'alerte si l'événement est nouveau ou a été modifié.
 func processMessage(msg jetstream.Msg) {
 	var event models.Event
 	if err := json.Unmarshal(msg.Data(), &event); err != nil {
@@ -93,13 +97,17 @@ func processMessage(msg jetstream.Msg) {
 			return
 		}
 		logrus.Infof("Nouvel événement ajouté: %s", event.Id)
+
+		// Publier l'alerte
+		if err := publishAlert(event); err != nil {
+			logrus.Errorf("Erreur lors de la publication de l'alerte: %v", err)
+		}
 	} else if err != nil {
-		// Erreur de requête
 		logrus.Errorf("Erreur vérification événement: %v", err)
 		_ = msg.Nak()
 		return
 	} else {
-		// Vérifier les modifications
+		// Mise à jour de l'événement si des modifications sont détectées
 		if hasChanges(existingEvent, event) {
 			if err := updateEvent(db, event); err != nil {
 				logrus.Errorf("Erreur mise à jour événement: %v", err)
@@ -107,13 +115,27 @@ func processMessage(msg jetstream.Msg) {
 				return
 			}
 			logrus.Infof("Événement mis à jour: %s", event.Id)
+
+			// Publier l'alerte
+			if err := publishAlert(event); err != nil {
+				logrus.Errorf("Erreur lors de la publication de l'alerte: %v", err)
+			}
 		}
 	}
 
-	// Ack si tout s'est bien passé
 	if err := msg.Ack(); err != nil {
 		logrus.Errorf("Erreur ACK: %v", err)
 	}
+}
+
+// publishAlert publie un message sur TIMETABLE.ALERTER contenant l'événement
+func publishAlert(event models.Event) error {
+	alertMsg, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	// Publication sur le sujet TIMETABLE.ALERTER via la connexion NATS
+	return helpers.NatsConn.Publish(alerterSubject, alertMsg)
 }
 
 func insertEvent(db *sql.DB, event models.Event) error {
