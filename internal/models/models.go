@@ -9,4 +9,5 @@ type Event struct {
 	Location     string `json:"LOCATION"`
 	Created      string `json:"CREATED"`
 	LastModified string `json:"LAST-MODIFIED"`
+	ResourceID   string `json:"RESOURCE-ID"`
 }

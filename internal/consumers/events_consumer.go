@@ -118,10 +118,10 @@ func processMessage(msg jetstream.Msg) {
 
 func insertEvent(db *sql.DB, event models.Event) error {
 	_, err := db.Exec(`INSERT INTO events 
-		(id, dtstamp, dtstart, dtend, location, description, created, lastModified) 
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+		(id, dtstamp, dtstart, dtend, location, description, created, lastModified, resourceId) 
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		event.Id, event.Dtstamp, event.Dtstart, event.Dtend,
-		event.Location, event.Description, event.Created, event.LastModified)
+		event.Location, event.Description, event.Created, event.LastModified, event.ResourceID)
 	return err
 }
 

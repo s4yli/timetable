@@ -83,7 +83,8 @@ func init() {
     		location VARCHAR(255),
     		description VARCHAR(255),
     		created VARCHAR(255) NOT NULL,
-    		lastModified VARCHAR(255) NOT NULL
+    		lastModified VARCHAR(255) NOT NULL,
+    		resourceId VARCHAR(255) NOT NULL
 		);`,
 	}
 	for _, scheme := range schemes {
