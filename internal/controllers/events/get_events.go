@@ -8,11 +8,11 @@ import (
 	"net/http"
 )
 
-// GetCollections
+// Get Events
 // @Tags         events
-// @Summary      Get events.
-// @Description  Get events.
-// @Success      200            {array}  models.Collection
+// @Summary      Récupère tous les événements
+// @Description  Récupère tous les événements
+// @Success      200            {array}  models.Event
 // @Failure      500             "Something went wrong"
 // @Router       /events [get]
 func GetEvents(w http.ResponseWriter, _ *http.Request) {

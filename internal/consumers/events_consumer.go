@@ -98,7 +98,8 @@ func processMessage(msg jetstream.Msg) {
 		}
 		logrus.Infof("Nouvel événement ajouté: %s", event.Id)
 
-		// Publier l'alerte
+		// Publier l'alerte en spécifiant que c'est un nouvel événement en supprimant la date de dernière modification
+		event.LastModified = ""
 		if err := publishAlert(event); err != nil {
 			logrus.Errorf("Erreur lors de la publication de l'alerte: %v", err)
 		}

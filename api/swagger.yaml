@@ -1,56 +1,70 @@
-basePath: /
-definitions:
-  models.Collection:
-    properties:
-      content:
-        type: string
-      id:
-        type: string
-    type: object
+swagger: "2.0"
 info:
-  contact:
-    email: justine.bachelard@ext.uca.fr
-    name: Justine Bachelard.
   description: API to manage events.
-  title: middleware/example
   version: 1.0.0
+  title: middleware/example
+  contact:
+    name: Justine Bachelard.
+    email: justine.bachelard@ext.uca.fr
+basePath: /
+schemes:
+  - http
 paths:
-  /collections:
+  /events:
     get:
+      tags:
+        - events
+      summary: Get events.
       description: Get events.
       responses:
-        "200":
+        200:
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.Collection'
             type: array
-        "500":
+            items:
+              $ref: '#/definitions/Event'
+        500:
           description: Something went wrong
-      summary: Get events.
-      tags:
-      - events
-  /collections/{id}:
+  /events/{id}:
     get:
+      tags:
+        - events
+      summary: Get a collection.
       description: Get a collection.
       parameters:
-      - description: Collection UUID formatted ID
-        in: path
-        name: id
-        required: true
-        type: string
+        - name: id
+          in: path
+          description: Collection UUID formatted ID
+          required: true
+          type: string
       responses:
-        "200":
+        200:
           description: OK
           schema:
-            $ref: '#/definitions/models.Collection'
-        "422":
+            $ref: '#/definitions/Event'
+        422:
           description: Cannot parse id
-        "500":
+        500:
           description: Something went wrong
-      summary: Get a collection.
-      tags:
-      - events
-schemes:
-- http
-swagger: "2.0"
+definitions:
+  Event:
+    type: object
+    properties:
+      Id:
+        type: string
+      Dtstamp:
+        type: string
+      Dtstart:
+        type: string
+      Dtend:
+        type: string
+      Description:
+        type: string
+      Location:
+        type: string
+      Created:
+        type: string
+      LastModified:
+        type: string
+      ResourceID:
+        type: string

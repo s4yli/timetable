@@ -8,12 +8,12 @@ import (
 	"net/http"
 )
 
-// GetCollection
+// Get Event
 // @Tags         events
-// @Summary      Get a collection.
-// @Description  Get a collection.
-// @Param        id           	path      string  true  "Collection UUID formatted ID"
-// @Success      200            {object}  models.Collection
+// @Summary      Récupère un événement
+// @Description  Récupère un événement par son ID
+// @Param        id           	path      string  true  "Évènement ID"
+// @Success      200            {object}  models.Event
 // @Failure      422            "Cannot parse id"
 // @Failure      500            "Something went wrong"
 // @Router       /events/{id} [get]
